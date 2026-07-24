@@ -3,7 +3,7 @@ from tqdm import tqdm
 from pathlib import Path
 
 MODEL_URLS = {
-    "crosswalk.pt": "https://github.com/mahdi-marjani/capx-core/releases/download/v0.1.0/crosswalk.pt",
+    "crosswalk.pt": "https://github.com/mahdi-marjani/rcap-core/releases/download/v0.1.0/crosswalk.pt",
 }
 
 

@@ -1,17 +1,17 @@
-# capx-core
+# rcap-core
 
 Core AI engine for solving reCAPTCHA v2 image challenges.
 
 ## Install
 
 ```bash
-pip install capx-core
+pip install rcap-core
 ````
 
 ## Quick example
 
 ```python
-from capx_core.detector import detect_cells
+from rcap_core.detector import detect_cells
 import numpy as np
 
 # image as numpy array (H, W, 3)
