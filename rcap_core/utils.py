@@ -26,53 +26,6 @@ def find_filled_cells(corners):
     return sorted(set(filled))  # Remove duplicates if any
 
 
-def find_object_locations(image, rows=4, cols=4, min_pixels=100):
-    """Find grid spots with objects (like cars or anything) by checking pixel count.
-
-    Splits image into rows x cols grid, checks if each spot has > min_pixels bright pixels.
-    Returns list of (row, col) spots with objects. Rows/cols start from 0.
-    """
-    height, width, _ = image.shape
-    row_size = height // rows
-    col_size = width // cols
-
-    locations = []
-    for r in range(rows):
-        for c in range(cols):
-            spot = image[
-                r * row_size : (r + 1) * row_size,
-                c * col_size : (c + 1) * col_size
-            ]
-            bright_count = np.sum(spot > 0)
-            if bright_count > min_pixels:
-                locations.append((r, c))
-
-    return locations
-
-
-def locations_to_numbers(locations, cols=4):
-    """Turn (row, col) locations into simple numbers (1-based) for a grid.
-
-    Example grid numbering (for 4 cols):
-    +----+----+----+----+
-    |  1 |  2 |  3 |  4 |
-    +----+----+----+----+
-    |  5 |  6 |  7 |  8 |
-    +----+----+----+----+
-    |  9 | 10 | 11 | 12 |
-    +----+----+----+----+
-    | 13 | 14 | 15 | 16 |
-    +----+----+----+----+
-
-    So (0,0) -> 1, (1,2) -> 7, etc.
-    """
-    numbers = []
-    for row, col in locations:
-        num = (row * cols) + col + 1
-        numbers.append(num)
-    return numbers
-
-
 def prepare_input(img, size):
     orig_w, orig_h = img.size
 
@@ -363,3 +316,26 @@ def parse_detections(boxes, scores, class_ids):
             'class_id': int(class_id)
         })
     return detections
+
+
+def split_img_4x4(img):
+    def box_and_gap(size, n):
+        box = size // n
+        while (size - box * n) % (n - 1) != 0:
+            box -= 1
+        gap = (size - box * n) // (n - 1)
+        return box, gap
+
+    h, w = img.shape
+    n = 4
+    bh, gap_h = box_and_gap(h, n)
+    bw, gap_w = box_and_gap(w, n)
+
+    cells = []
+    for i in range(n):
+        for j in range(n):
+            y = i * (bh + gap_h)
+            x = j * (bw + gap_w)
+            cells.append(img[y:y+bh, x:x+bw])
+
+    return cells
