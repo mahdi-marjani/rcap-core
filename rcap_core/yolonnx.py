@@ -1,6 +1,6 @@
 import onnxruntime
 import numpy as np
-import utils
+from . import utils
 
 
 class _YOLOBase:
