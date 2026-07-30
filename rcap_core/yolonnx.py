@@ -44,7 +44,7 @@ class YOLOv8(_YOLOBase):
     Covers YOLOv8/v11-style exports, and YOLO26 exported with end2end=False.
     """
 
-    def __call__(self, img, size=640, conf_thres=0.5, iou_thres=0.5):
+    def __call__(self, img, size=640, conf=0.25, iou_thres=0.7):
         # prepare input
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
 
@@ -52,7 +52,7 @@ class YOLOv8(_YOLOBase):
         outp = self.inference(inp)
 
         # post-process (argmax over classes + multiclass NMS)
-        boxes, scores, class_ids = utils.post_process(outp, conf_thres=conf_thres, iou_thres=iou_thres)
+        boxes, scores, class_ids = utils.post_process(outp, conf_thres=conf, iou_thres=iou_thres)
 
         # resize boxes back to original image
         boxes = utils.scale_boxes(boxes, ratio, pad, orig_size)
@@ -72,12 +72,12 @@ class YOLOv8Seg(_YOLOBase):
     original image, cropped to that detection's own box.
     """
 
-    def __call__(self, img, size=640, conf_thres=0.5, iou_thres=0.5):
+    def __call__(self, img, size=640, conf=0.25, iou_thres=0.7):
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
         outp = self.inference(inp)
 
         boxes, scores, class_ids, mask_coeffs, proto = utils.post_process_seg(
-            outp, conf_thres=conf_thres, iou_thres=iou_thres
+            outp, conf_thres=conf, iou_thres=iou_thres
         )
 
         boxes = utils.scale_boxes(boxes, ratio, pad, orig_size)
@@ -94,12 +94,12 @@ class YOLOv26Seg(_YOLOBase):
     original image, cropped to that detection's own box.
     """
 
-    def __call__(self, img, size=640, conf_thres=0.5):
+    def __call__(self, img, size=640, conf=0.25):
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
         outp = self.inference(inp)
 
         boxes, scores, class_ids, mask_coeffs, proto = utils.post_process_seg_e2e(
-            outp, conf_thres=conf_thres
+            outp, conf_thres=conf
         )
 
         boxes = utils.scale_boxes(boxes, ratio, pad, orig_size)
@@ -116,7 +116,7 @@ class YOLOv26(_YOLOBase):
     argmax and no NMS needed here - just a confidence filter.
     """
 
-    def __call__(self, img, size=640, conf_thres=0.5):
+    def __call__(self, img, size=640, conf=0.25):
         # prepare input
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
 
@@ -124,7 +124,7 @@ class YOLOv26(_YOLOBase):
         outp = self.inference(inp)
 
         # post-process (confidence filter only, already NMS'd)
-        boxes, scores, class_ids = utils.post_process_e2e(outp, conf_thres=conf_thres)
+        boxes, scores, class_ids = utils.post_process_e2e(outp, conf_thres=conf)
 
         # resize boxes back to original image
         boxes = utils.scale_boxes(boxes, ratio, pad, orig_size)
