@@ -13,7 +13,7 @@ def _run_model_for_target(image, target_num):
     if target_num == 1003:
         return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 522
 
-    return YOLO_MODELS["yolo11x"].predict(image, conf=0.4), target_num
+    return YOLO_MODELS["yolo"].predict(image, conf=0.4), target_num
 
 
 def _find_target_boxes(result, target_num):

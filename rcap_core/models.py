@@ -10,9 +10,9 @@ MODELS_DIRECTORY.mkdir(exist_ok=True)
 download_model_if_missing("crosswalk.pt", MODELS_DIRECTORY)
 
 YOLO_MODELS = {
-    "yolo11x": YOLO(MODELS_DIRECTORY / "yolo11x.pt"),
+    "yolo": YOLO(MODELS_DIRECTORY / "yolo11x.pt"),
     "crosswalk": YOLO(MODELS_DIRECTORY / "crosswalk.pt"),
-    "yolo11x-seg": YOLO(MODELS_DIRECTORY / "yolo11x-seg.pt"),
+    "yolo-seg": YOLO(MODELS_DIRECTORY / "yolo11x-seg.pt"),
     "yolov8x-oiv7": YOLO(MODELS_DIRECTORY / "yolov8x-oiv7.pt"),
 }
 

@@ -21,7 +21,7 @@ def _run_model_for_target(image, target_num):
     if target_num == 1003:
         return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 522
 
-    return YOLO_MODELS["yolo11x"].predict(image, conf=0.4), target_num
+    return YOLO_MODELS["yolo"].predict(image, conf=0.4), target_num
 
 
 def _find_target_boxes(result, target_num):
@@ -46,7 +46,7 @@ def detect_cells_4x4(image, target_num):
 # =========================
 
 def _detect_4x4_with_seg(image, target_num):
-    result = YOLO_MODELS["yolo11x-seg"].predict(image, conf=0.4)
+    result = YOLO_MODELS["yolo-seg"].predict(image, conf=0.4)
     target_boxes = _find_target_boxes(result, target_num)
 
     cells = []
