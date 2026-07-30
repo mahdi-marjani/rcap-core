@@ -1,6 +1,7 @@
 import onnxruntime
 import numpy as np
 from . import utils
+from PIL import Image
 
 
 class _YOLOBase:
@@ -45,6 +46,7 @@ class YOLOv8(_YOLOBase):
     """
 
     def __call__(self, img, size=640, conf=0.25, iou_thres=0.7):
+        img = Image.fromarray(img)
         # prepare input
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
 
@@ -73,6 +75,7 @@ class YOLOv8Seg(_YOLOBase):
     """
 
     def __call__(self, img, size=640, conf=0.25, iou_thres=0.7):
+        img = Image.fromarray(img)
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
         outp = self.inference(inp)
 
@@ -95,6 +98,7 @@ class YOLOv26Seg(_YOLOBase):
     """
 
     def __call__(self, img, size=640, conf=0.25):
+        img = Image.fromarray(img)
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
         outp = self.inference(inp)
 
@@ -117,6 +121,7 @@ class YOLOv26(_YOLOBase):
     """
 
     def __call__(self, img, size=640, conf=0.25):
+        img = Image.fromarray(img)
         # prepare input
         inp, ratio, pad, orig_size = utils.prepare_input(img, size)
 
