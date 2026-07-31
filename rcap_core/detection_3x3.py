@@ -6,14 +6,6 @@ from .models import YOLO_MODELS
 
 
 def _run_model_for_target(image, target_num):
-    # if target_num == 1001:
-    #     return YOLO_MODELS["crosswalk"].predict(image, conf=0.4), 0
-    # if target_num == 1002:
-    #     return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 489
-    # if target_num == 1003:
-    #     return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 522
-
-    # return YOLO_MODELS["yolo"].predict(image, conf=0.4), target_num
     if target_num == 1001:
         return YOLO_MODELS["crosswalk"](image, conf=0.4), 0
     if target_num == 1002:
@@ -25,10 +17,6 @@ def _run_model_for_target(image, target_num):
 
 
 def _find_target_boxes(result, target_num):
-    # return [
-    #     i for i, cls in enumerate(result[0].boxes.cls)
-    #     if cls == target_num
-    # ]
     return [
         i for i, box in enumerate(result)
         if box["class_id"] == target_num
@@ -43,7 +31,6 @@ def detect_cells_3x3(image, target_num):
     result, target_num = _run_model_for_target(image, target_num)
 
     target_boxes = _find_target_boxes(result, target_num)
-    # boxes = result[0].boxes.data
     boxes = [
         res["bbox"] for res in result
     ]

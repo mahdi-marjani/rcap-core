@@ -1,15 +1,9 @@
 import math
-# import cv2
 import numpy as np
 
 from .models import YOLO_MODELS
-from .utils import (
-    # find_object_locations,
-    # locations_to_numbers,
-    find_filled_cells,
-    split_img_4x4
+from .utils import find_filled_cells, split_img_4x4
 
-)
 
 # =========================
 # Basic helpers
@@ -17,14 +11,6 @@ from .utils import (
 
 
 def _run_model_for_target(image, target_num):
-    # if target_num == 1001:
-    #     return YOLO_MODELS["crosswalk"].predict(image, conf=0.4), 0
-    # if target_num == 1002:
-    #     return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 489
-    # if target_num == 1003:
-    #     return YOLO_MODELS["yolov8x-oiv7"].predict(image, conf=0.4), 522
-
-    # return YOLO_MODELS["yolo"].predict(image, conf=0.4), target_num
     if target_num == 1001:
         return YOLO_MODELS["crosswalk"](image, conf=0.4), 0
     if target_num == 1002:
@@ -36,10 +22,6 @@ def _run_model_for_target(image, target_num):
 
 
 def _find_target_boxes(result, target_num):
-    # return [
-    #     i for i, cls in enumerate(result[0].boxes.cls)
-    #     if cls == target_num
-    # ]
     return [
         i for i, box in enumerate(result)
         if box["class_id"] == target_num
@@ -71,24 +53,6 @@ def _detect_4x4_with_seg(image, target_num):
     cells = []
 
     for idx in target_boxes:
-        # if result[0].masks is None:
-        #     continue
-
-        # mask = result[0].masks[idx].cpu().data.numpy().transpose(1, 2, 0)
-        # mask = cv2.merge((mask, mask, mask))
-
-        # h, w, _ = result[0].orig_img.shape
-        # mask = cv2.resize(mask, (w, h))
-        # mask = _make_binary_mask(mask)
-
-        # masked = cv2.bitwise_and(
-        #     result[0].orig_img,
-        #     result[0].orig_img,
-        #     mask=mask
-        # )
-
-        # locations = find_object_locations(masked, rows=4, cols=4, min_pixels=100)
-        # cells.extend(locations_to_numbers(locations))
         mask = masks[idx]
         splited_mask = split_img_4x4(mask)
         for i, section in enumerate(splited_mask):
@@ -99,19 +63,12 @@ def _detect_4x4_with_seg(image, target_num):
     return sorted(set(cells))
 
 
-# def _make_binary_mask(mask):
-#     hsv = cv2.cvtColor(mask, cv2.COLOR_BGR2HSV)
-#     mask = cv2.inRange(mask, (0, 0, 0), (0, 0, 1))
-#     return cv2.bitwise_not(mask)
-
-
 # =========================
 # Box based
 # =========================
 
 def _detect_4x4_with_boxes(image, target_num):
     result, target_num = _run_model_for_target(image, target_num)
-    # boxes = result[0].boxes.data
     boxes = [
         res["bbox"] for res in result
     ]
