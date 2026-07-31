@@ -3,9 +3,9 @@ from tqdm import tqdm
 from pathlib import Path
 
 MODEL_URLS = {
-    "yolo26x.onnx": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26x.onnx",
+    "yolo26l.onnx": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26l.onnx",
     "crosswalk.onnx": "https://github.com/mahdi-marjani/rcap-core/releases/download/v0.1.0/crosswalk.onnx",
-    "yolo26x-seg.onnx": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26x-seg.onnx",
+    "yolo26l-seg.onnx": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26l-seg.onnx",
     "yolov8x-oiv7.onnx": "https://github.com/mahdi-marjani/rcap-core/releases/download/v0.1.0/yolov8x-oiv7.onnx",
 }
 
