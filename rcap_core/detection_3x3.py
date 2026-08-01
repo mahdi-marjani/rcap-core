@@ -8,10 +8,6 @@ from .models import YOLO_MODELS
 def _run_model_for_target(image, target_num):
     if target_num == 1001:
         return YOLO_MODELS["crosswalk"](image, conf=0.4), 0
-    if target_num == 1002:
-        return YOLO_MODELS["yolov8x-oiv7"](image, conf=0.4), 489
-    if target_num == 1003:
-        return YOLO_MODELS["yolov8x-oiv7"](image, conf=0.4), 522
 
     return YOLO_MODELS["yolo"](image, conf=0.4), target_num
 

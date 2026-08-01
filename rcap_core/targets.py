@@ -10,8 +10,6 @@ TARGET_MAPPING = {
     "motorcycle": 3,
     "traffic": 9,
     "crosswalk": 1001,
-    "stair": 1002,
-    "taxi": 1003,
 }
 
 def get_target_num(target_text):
